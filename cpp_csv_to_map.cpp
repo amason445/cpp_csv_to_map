@@ -41,14 +41,17 @@ int main()
             std::getline(iss, skips, ',');
         }
 
-
+        //parse tuple values from CSV
         iss >> adj_close;
         iss.ignore();
         iss >> volume;
 
+        //package adj_close and volume into tuple
         price_volume_records[date] = std::make_tuple(adj_close, volume);
 
+        //logging string
         std::cout << "Date: " << date << ". Tuple: (" << adj_close << ", " << volume << ")" << std::endl;
+
 
     }
 
