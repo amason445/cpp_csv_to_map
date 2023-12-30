@@ -1,16 +1,21 @@
 #include "MapToCSV.h"
+#include "../FileHandler/FileHandler.h"
+
 #include <sstream>
 #include <stdexcept>
 #include <fstream>
 
 
-MapToCSV::MapToCSV(const std::string& input_filename, const std::string& output_filename, const std::string& logging_filename) : inputFileName(input_filename), outputFileName(output_filename), loggingFileName(logging_filename){}
+MapToCSV::MapToCSV(const std::string& input_filename) : inputFileName(input_filename){}
 
 void MapToCSV::get_output() {
+
+    FileHandler csvFileHandler = FileHandler(inputFileName);
+     
     //create input file stream
-    std::ifstream input(inputFileName);
-    std::ofstream output(outputFileName);
-    std::ofstream logging(loggingFileName);
+    std::ifstream input = csvFileHandler.getInputStream();
+    std::ofstream output = csvFileHandler.getOutputStream();
+    std::ofstream logging = csvFileHandler.getLoggingStream();
 
     checkIfOpen();
 
@@ -55,12 +60,12 @@ void MapToCSV::get_output() {
 //check if input file is open
 void MapToCSV::checkIfOpen() {
     if (!input.good()) {
-        throw std::runtime_error("Failed to open input file: " + inputFileName);
+        throw std::runtime_error("Failed to open input file.");
     }
     if (!output.good()) {
-        throw std::runtime_error("Failed to open output file: " + outputFileName);
+        throw std::runtime_error("Failed to open output file.");
     }
     if (!logging.good()) {
-        throw std::runtime_error("Failed to open logging file: " + loggingFileName);
+        throw std::runtime_error("Failed to open logging file.");
     }
 }

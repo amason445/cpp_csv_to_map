@@ -5,7 +5,7 @@ int main()
 {
     try {
         //Writes SPY.csv to map of tuples and then a txt file
-        MapToCSV SPYcsv = MapToCSV("SPY.csv", "output.txt", "logging.txt");
+        MapToCSV SPYcsv = MapToCSV("SPY.csv");
         SPYcsv.get_output();
     }
     catch (const std::exception& e) {

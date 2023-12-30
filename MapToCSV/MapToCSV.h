@@ -13,16 +13,14 @@
 class MapToCSV {
 public:
 	//constructor
-	MapToCSV(const std::string& input_filename, const std::string& output_filename, const std::string& logging_filename);
+	MapToCSV(const std::string& input_filename);
 
 	//member functions
 	void get_output();
 
 private:
-	//file path
+	//input filename
 	std::string inputFileName;
-	std::string outputFileName;
-	std::string loggingFileName;
 
 	//file streams
 	std::ifstream input;
