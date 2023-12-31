@@ -127,8 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpp_csv_to_map.cpp" />
     <ClCompile Include="FileHandler\FileHandler.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MapToCSV\MapToCSV.cpp" />
   </ItemGroup>
   <ItemGroup>
