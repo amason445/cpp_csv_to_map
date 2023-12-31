@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 FileHandler::FileHandler(const std::string& input_filename) : inputFileName(input_filename){
-	outputFileName = createOutputFileName("_output.txt");
+	outputFileName = "OutputFiles/" + createOutputFileName("_output.txt");
 	loggingFileName = createOutputFileName("_logging.txt");
 }
 
