@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+
 void write_to_output(MapToCSV& csvToMap, std::ofstream& output) {
     //write map to file using output file stream
     for (const auto& pair : csvToMap.get_map()) {
