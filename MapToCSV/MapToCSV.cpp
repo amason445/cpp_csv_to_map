@@ -1,29 +1,24 @@
 #include "MapToCSV.h"
-#include "../FileHandler/FileHandler.h"
-
 #include <sstream>
 #include <stdexcept>
-#include <fstream>
 
 
-MapToCSV::MapToCSV(const std::string& input_filename) : inputFileName(input_filename){}
-
-void MapToCSV::get_output() {
-
-    FileHandler csvFileHandler = FileHandler(inputFileName);
-     
-    //create input file stream
-    std::ifstream input = csvFileHandler.getInputStream();
-    std::ofstream output = csvFileHandler.getOutputStream();
-    std::ofstream logging = csvFileHandler.getLoggingStream();
-
-    checkIfOpen();
+MapToCSV::MapToCSV(std::ifstream& input, std::ofstream& logging) :
+    inputStream(input),
+    loggingStream(logging)
+{
+    if (!inputStream.good() || !loggingStream.good()) {
+       throw std::runtime_error("One or more file streams are not in a good state.");
+    }
+}
+        
+void MapToCSV::createPriceVolumeRecords() {
 
     //strip header from csv
-    std::getline(input, csv_header);
+    std::getline(inputStream, csv_header);
 
     //process file as a stream
-    while (std::getline(input, csv_line)) {
+    while (std::getline(inputStream, csv_line)) {
 
         //create stream from csv line
         std::istringstream iss(csv_line);
@@ -34,38 +29,24 @@ void MapToCSV::get_output() {
             std::getline(iss, skips, ',');
         }
 
-        //parse tuple values from CSV
-        iss >> adj_close;
-        iss.ignore();
-        iss >> volume;
+        //processes stream and checks for breaks
+        if (iss >> adj_close && iss.ignore() && iss >> volume) {
+            //package adj_close and volume into tuple
+            priceVolumeRecords[date] = std::make_tuple(adj_close, volume);
 
-        //package adj_close and volume into tuple
-        price_volume_records[date] = std::make_tuple(adj_close, volume);
+            //logging string
+            loggingStream << "Date: " << date << ". Tuple: (" << adj_close << ", " << volume << ") was a success!" << std::endl;
+        }
+        else {
+            loggingStream << "Error parsing line: " << csv_line << std::endl;
+        }
 
-        //logging string
-        logging << "Date: " << date << ". Tuple: (" << adj_close << ", " << volume << ") was a success!" << std::endl;
+        //reset stream for new line
+        iss.clear();
     }
-        
-    logging.close();
-    input.close();
-
-    //write map to file using output file stream
-    for (const auto& pair : price_volume_records) {
-        output << pair.first << ": (" << std::get<0>(pair.second) << ", " << std::get<1>(pair.second) << ")\n";
-    }
-
-    output.close();   
 }
 
-//check if input file is open
-void MapToCSV::checkIfOpen() {
-    if (!input.good()) {
-        throw std::runtime_error("Failed to open input file.");
-    }
-    if (!output.good()) {
-        throw std::runtime_error("Failed to open output file.");
-    }
-    if (!logging.good()) {
-        throw std::runtime_error("Failed to open logging file.");
-    }
+std::map<std::string, std::tuple<double, long>>& MapToCSV::get_map() {
+    createPriceVolumeRecords();
+    return priceVolumeRecords;
 }

@@ -1,12 +1,25 @@
 #include "MapToCSV/MapToCSV.h"
+#include "FileHandler/FileHandler.h"
 #include <iostream>
+#include <fstream>
+
+void write_to_output(MapToCSV& csvToMap, std::ofstream& output) {
+    //write map to file using output file stream
+    for (const auto& pair : csvToMap.get_map()) {
+        output << pair.first << ": (" << std::get<0>(pair.second) << ", " << std::get<1>(pair.second) << ")\n";
+    }
+}
 
 int main()
 {
     try {
-        //Writes SPY.csv to map of tuples and then a txt file
-        MapToCSV SPYcsv = MapToCSV("IOFiles/SPY.csv");
-        SPYcsv.get_output();
+        std::string inputFileName = "IOFiles/SPY.csv";
+
+        FileHandler csvFileHandler(inputFileName);
+
+        MapToCSV csvToMap(csvFileHandler.getInputStream(), csvFileHandler.getLoggingStream());
+
+        write_to_output(csvToMap, csvFileHandler.getOutputStream());
     }
     catch (const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;

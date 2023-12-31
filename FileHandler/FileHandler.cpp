@@ -1,10 +1,27 @@
 #include "FileHandler.h"
 #include <stdexcept>
 
-FileHandler::FileHandler(const std::string& input_filename) : inputFileName(input_filename){
-	outputFileName = createOutputFileName("_output.txt");
-	loggingFileName = createOutputFileName("_logging.txt");
+FileHandler::FileHandler(const std::string& input_filename) : 
+	inputFileName(input_filename),
+	outputFileName(createOutputFileName("_output.txt")),
+	loggingFileName(createOutputFileName("_logging.txt")),
+	input(inputFileName),
+	output(outputFileName),
+	logging(loggingFileName) {
+
+	if (inputFileName.find('.') == std::string::npos) {
+		throw std::runtime_error("CSV is invalid Please investigate: " + inputFileName);
+	}
+
+	if (!input.is_open()) {
+		throw std::runtime_error("Failed to open input file.");
+	}
+	if (!output.is_open() || !logging.is_open()) {
+		throw std::runtime_error("Failed to open output or logging file.");
+	}
 }
+
+FileHandler::~FileHandler() {}
 
 std::string FileHandler::createOutputFileName(const std::string& file_suffix) {
 	// set stop character to windows file extension
@@ -21,14 +38,14 @@ std::string FileHandler::createOutputFileName(const std::string& file_suffix) {
 	}
 }
 
-std::ifstream FileHandler::getInputStream() {
-	return std::ifstream(inputFileName);
+std::ifstream& FileHandler::getInputStream() {
+	return input;
 }
 
-std::ofstream FileHandler::getOutputStream() {
-	return std::ofstream(outputFileName);
+std::ofstream& FileHandler::getOutputStream() {
+	return output;
 }
 
-std::ofstream FileHandler::getLoggingStream() {
-	return std::ofstream(loggingFileName);
+std::ofstream& FileHandler::getLoggingStream() {
+	return logging;
 }

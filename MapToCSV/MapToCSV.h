@@ -8,24 +8,10 @@
 #include <tuple>
 #include <fstream>
 
-
-
 class MapToCSV {
-public:
-	//constructor
-	MapToCSV(const std::string& input_filename);
-
-	//member functions
-	void get_output();
-
-private:
-	//input filename
-	std::string inputFileName;
-
-	//file streams
-	std::ifstream input;
-	std::ofstream output;
-	std::ofstream logging;
+	//input and logging references
+	std::ifstream& inputStream;
+	std::ofstream& loggingStream;
 
 	//CSV parsing components
 	std::string csv_header;
@@ -38,10 +24,16 @@ private:
 	long volume;
 
 	//output data structure
-	std::map<std::string, std::tuple<double, long>> price_volume_records;
+	std::map<std::string, std::tuple<double, long>> priceVolumeRecords;
 
-	//function to check errors
-	void checkIfOpen();
+	void createPriceVolumeRecords();
+
+public:
+	//constructor
+	MapToCSV(std::ifstream& input, std::ofstream& logging);
+
+	//member functions
+	std::map<std::string, std::tuple<double, long>>& get_map();
 };
 
 #endif // !MAPCSV_H
