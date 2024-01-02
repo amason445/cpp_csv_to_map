@@ -132,11 +132,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Accumulator\Accumulator.cpp" />
     <ClCompile Include="FileHandler\FileHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapToCSV\MapToCSV.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accumulator\Accumulator.h" />
     <ClInclude Include="FileHandler\FileHandler.h" />
     <ClInclude Include="MapToCSV\MapToCSV.h" />
   </ItemGroup>

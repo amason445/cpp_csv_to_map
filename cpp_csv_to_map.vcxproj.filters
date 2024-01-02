@@ -24,12 +24,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Accumulator\Accumulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapToCSV\MapToCSV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileHandler\FileHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Accumulator\Accumulator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

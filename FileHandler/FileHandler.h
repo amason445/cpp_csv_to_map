@@ -32,6 +32,7 @@ public:
 	std::ifstream& getInputStream();
 	std::ofstream& getOutputStream();
 	std::ofstream& getLoggingStream();
+
 };
 
 #endif // !FILEHANDLER_H
